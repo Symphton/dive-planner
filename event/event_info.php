@@ -13,14 +13,14 @@ $stmt = $pdo->prepare("SELECT * FROM divesite WHERE id = ?");
 $stmt->execute(array($event['id_divesite']));
 $divesite = $stmt->fetch();
 $stmt = $pdo->prepare("SELECT user_event.id, user.name, user.firstname, certificate.name AS certificate, exercise, carpool FROM user INNER JOIN user_event ON user.id = user_event.id_user INNER JOIN certificate ON user.id_certificate = certificate.id WHERE user_event.id_event = ? ORDER BY user.name ASC, user.firstname ASC ");
-$stmt->execute(array($_SESSION['id']));
+$stmt->execute(array($id));
 $users = $stmt->fetchAll();
 ?>
     <div class="container">
         <h2>Duik info</h2>
         <br/>
         <h3>Algemene info</h3>
-        <div class="col-sm-8">
+        <div class="row justify-content-md-center">
             <div class="card">
                 <div class="card-body">
                     <table class="table table-hover">
@@ -80,7 +80,7 @@ $users = $stmt->fetchAll();
         </div>
         <br/>
         <h3>Carpool info</h3>
-        <div class="col-sm-8">
+        <div class="row justify-content-md-center">
             <div class="card">
                 <div class="card-body">
                     <table class="table table-hover">
@@ -108,7 +108,7 @@ $users = $stmt->fetchAll();
         </div>
         <br/>
         <h3>Duikplaats info</h3>
-        <div class="col-sm-8">
+        <div class="row justify-content-md-center">
             <div class="card">
                 <div class="card-body">
                     <table class="table table-hover">
@@ -160,7 +160,7 @@ $users = $stmt->fetchAll();
         </div>
         <br/>
         <h3>Duikplaats veiligheid</h3>
-        <div class="col-sm-8">
+        <div class="row justify-content-md-center">
             <div class="card">
                 <div class="card-body">
                     <table class="table table-hover">

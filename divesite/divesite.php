@@ -13,7 +13,9 @@ $diveclubs = $pdo->query("SELECT id, name, city, country FROM divesite ORDER BY 
                 <th>Naam</th>
                 <th>Stad</th>
                 <th>Land</th>
-                <th></th>
+                <?php if (isAdminOrInstructor()) {
+                    print "<th></th>";
+                } ?>
             </tr>
             </thead>
             <tbody>
@@ -22,10 +24,12 @@ $diveclubs = $pdo->query("SELECT id, name, city, country FROM divesite ORDER BY 
                     <td><?php print $diveclub['name']; ?></td>
                     <td><?php print $diveclub['city']; ?></td>
                     <td><?php print $diveclub['country']; ?></td>
-                    <td><a class="btn btn-outline-warning"
-                           href="divesite_edit.php?id=<?php print $diveclub['id']; ?>"
-                           role="button">Wijzig</a>
-                        <?php if (isAdmin()) { ?>
+                    <td><?php if (isAdminOrInstructor()) { ?>
+                            <a class="btn btn-outline-warning"
+                               href="divesite_edit.php?id=<?php print $diveclub['id']; ?>"
+                               role="button">Wijzig</a>
+                        <?php }
+                        if (isAdmin()) { ?>
                             <a class="btn btn-outline-danger"
                                href="divesite_delete.php?id=<?php print $diveclub['id']; ?>"
                                role="button">Delete</a>

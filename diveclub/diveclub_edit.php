@@ -37,7 +37,7 @@ $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchA
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="name">Stad</label>
+                    <label for="city">Stad</label>
                     <input type="text" class="form-control" id="city" name="city"
                            value="<?php if (isset($city)) {
                                print $city;
