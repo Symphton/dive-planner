@@ -13,6 +13,24 @@ function isAdmin()
     }
 }
 
+function isAdminOrInstructor()
+{
+    if ((isset($_SESSION['admin']) and $_SESSION['admin']) or (isset($_SESSION['instructor']) and $_SESSION['instructor'])) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isInstructor()
+{
+    if (isset($_SESSION['instructor']) and $_SESSION['instructor']) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function isMember()
 {
     if (!isset($_SESSION['email'])) {

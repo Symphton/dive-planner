@@ -5,7 +5,7 @@ if (isset($_POST['submit'])) {
     } else {
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $stmt = $pdo->prepare("SELECT id, password,firstname,admin FROM user WHERE email=?");
+        $stmt = $pdo->prepare("SELECT user.id, password, firstname, admin, level FROM user LEFT OUTER JOIN certificate ON user.id_certificate = certificate.id WHERE email=?");
         $stmt->execute(array($email));
         $user = $stmt->fetch();
         if (password_verify($password, $user['password'])) {
@@ -13,6 +13,9 @@ if (isset($_POST['submit'])) {
             $_SESSION['firstname'] = $user['firstname'];
             $_SESSION['id'] = $user['id'];
             $_SESSION['admin'] = $user['admin'];
+            if ($user['level'] == 4) {
+                $_SESSION['instructor'] = 1;
+            }
             header("location: event/event.php");
         } else {
             $error = "Email of wachtwoord is ongeldig";

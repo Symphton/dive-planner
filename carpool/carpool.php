@@ -13,7 +13,9 @@ $carpools = $pdo->query("SELECT id, name, city, country FROM carpool ORDER BY na
                 <th>Naam</th>
                 <th>Stad</th>
                 <th>Land</th>
-                <th></th>
+                <?php if (isAdminOrInstructor()) {
+                    print "<th></th>";
+                } ?>
             </tr>
             </thead>
             <tbody>
@@ -22,10 +24,12 @@ $carpools = $pdo->query("SELECT id, name, city, country FROM carpool ORDER BY na
                     <td><?php print $carpool['name']; ?></td>
                     <td><?php print $carpool['city']; ?></td>
                     <td><?php print $carpool['country']; ?></td>
-                    <td><a class="btn btn-outline-warning"
-                           href="carpool_edit.php?id=<?php print $carpool['id']; ?>"
-                           role="button">Wijzig</a>
-                        <?php if (isAdmin()) { ?>
+                    <td><?php if (isAdminOrInstructor()) { ?>
+                            <a class="btn btn-outline-warning"
+                               href="carpool_edit.php?id=<?php print $carpool['id']; ?>"
+                               role="button">Wijzig</a>
+                        <?php }
+                        if (isAdmin()) { ?>
                             <a class="btn btn-outline-danger"
                                href="carpool_delete.php?id=<?php print $carpool['id']; ?>"
                                role="button">Delete</a>

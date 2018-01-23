@@ -13,13 +13,18 @@
                     <a class="nav-link" href="/event/event.php">Duiken</a>
                 </li>
                 <?php
-                if (isAdmin()) { ?>
+                if (isAdminOrInstructor()) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/carpool/carpool.php">Carpool</a>
+                        <a class="nav-link" href="/user/user.php">Gebruikers</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/divesite/divesite.php">Duikplaatsen</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/carpool/carpool.php">Carpool</a>
+                    </li>
+                <?php }
+                if (isAdmin()) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/diveclub/diveclub.php">Duikclubs</a>
                     </li>
@@ -28,9 +33,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/federation/federation.php">Federaties</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user/user.php">Gebruikers</a>
                     </li>
                 <?php } ?>
             </ul>

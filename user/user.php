@@ -15,7 +15,7 @@ $users = $pdo->query("SELECT user.id, user.firstname, user.name, user.email, cer
                 <th>Email</th>
                 <th>Certificaat</th>
                 <th>Duikclub</th>
-                <?php if (isAdmin()) {
+                <?php if (isAdminOrInstructor()) {
                     print "<th></th>";
                 } ?>
             </tr>
@@ -28,14 +28,16 @@ $users = $pdo->query("SELECT user.id, user.firstname, user.name, user.email, cer
                     <td><?php print $user['email']; ?></td>
                     <td><?php print $user['certificate']; ?></td>
                     <td><?php print $user['diveclub']; ?></td>
-                    <?php if (isAdmin()) { ?>
-                        <td><a class="btn btn-outline-primary" href="user_diveclub.php?id=<?php print $user['id']; ?>"
-                               role="button">Duikclub</a> <a class="btn btn-outline-warning"
-                                                             href="user_edit.php?id=<?php print $user['id']; ?>"
-                                                             role="button">Wijzig</a> <a class="btn btn-outline-danger"
-                                                                                         href="user_delete.php?id=<?php print $user['id']; ?>"
-                                                                                         role="button">Delete</a></td>
-                    <?php } ?>
+                    <?php if (isAdminOrInstructor()) { ?>
+                    <td><a class="btn btn-outline-primary" href="user_diveclub.php?id=<?php print $user['id']; ?>"
+                           role="button">Duikclub</a> <a class="btn btn-outline-warning"
+                                                         href="user_edit.php?id=<?php print $user['id']; ?>"
+                                                         role="button">Wijzig</a>
+                        <?php }
+                        if (isAdmin()) { ?> <a class="btn btn-outline-danger"
+                                               href="user_delete.php?id=<?php print $user['id']; ?>"
+                                               role="button">Delete</a></td>
+                <?php } ?>
                 </tr>
             <?php } ?>
             </tbody>

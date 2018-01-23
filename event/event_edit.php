@@ -65,6 +65,8 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                            value="<?php if (isset($date)) {
                                print $date;
                            } ?>"
+                           min=<?php echo date('Y-m-d'); ?>
+                           pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
                            required>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -100,6 +102,7 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                            value="<?php if (isset($time_carpool)) {
                                print $time_carpool;
                            } ?>"
+                           step="60"
                            required>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -108,6 +111,7 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                            value="<?php if (isset($time_onsite)) {
                                print $time_onsite;
                            } ?>"
+                           step="60"
                            required>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -116,6 +120,7 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                            value="<?php if (isset($time_water)) {
                                print $time_water;
                            } ?>"
+                           step="60"
                            required>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -123,7 +128,8 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                     <input type="time" class="form-control" id="time_tide" name="time_tide"
                            value="<?php if (isset($time_tide)) {
                                print $time_tide;
-                           } ?>">
+                           } ?>"
+                           step="60">
                 </div>
             </div>
             <div class="row">
