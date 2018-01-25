@@ -23,5 +23,4 @@ if (mail($to, $subject, $message, $headers)) {
 } else {
     $_SESSION['error'] = "Het verzenden van het nieuwe wachtwoord was helaas niet mogelijk.";
 }
-
-header("Location:index.php");
+header("Location:index");

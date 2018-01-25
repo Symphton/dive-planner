@@ -1,2 +1,2 @@
 <?php
-header("Location:event.php");
+header("Location:event");

@@ -6,6 +6,7 @@ $id = $_GET['id'];
 if (isset($_POST['submit'])) {
     $stmt = "INSERT INTO diveclub_user (id_user, id_diveclub) VALUES (?, ?)";
     $pdo->prepare($stmt)->execute([$id, $_POST['diveclub']]);
+    $_SESSION['success'] = "Duikclub " . $_POST['diveclub'] . " werd succesvol toegevoegd.";
     header("location: user_diveclub.php?id=" . $id);
 }
 
@@ -18,6 +19,7 @@ $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER 
 include "../html/partials/nav.php";
 ?>
     <div class="container">
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Duikclub overzicht voor <?php print $currentClubs[0]['firstname'] . " " . $currentClubs[0]['name']; ?></h2>
         <table class="table table-hover">
             <thead>

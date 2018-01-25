@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $stmt = $pdo->prepare("UPDATE federation SET name = ? WHERE id = ?");
     $stmt->execute(array($name, $id));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 ?>

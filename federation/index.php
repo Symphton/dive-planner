@@ -1,2 +1,2 @@
 <?php
-header("Location:federation.php");
+header("Location:federation");

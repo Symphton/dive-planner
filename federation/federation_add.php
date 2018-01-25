@@ -5,7 +5,7 @@ if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $stmt = $pdo->prepare("INSERT INTO federation (name) VALUES (?)");
     $stmt->execute(array($name));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 ?>

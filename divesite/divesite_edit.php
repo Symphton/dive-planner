@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
     $info = $_POST['info'];
     $stmt = $pdo->prepare("UPDATE divesite SET name = ?, street = ?, number = ?, zip = ?, city = ?, country = ?, depth = ?, ehbo = ?, o2 = ?, telephone = ?, safety = ?, entrance = ?, flag = ?, danger = ?, permission = ?, fee = ?, parking = ?, cafetaria = ?, shower = ?, info = ? WHERE id = ?");
     $stmt->execute(array($name, $street, $number, $zip, $city, $country, $depth, $ehbo, $o2, $telephone, $safety, $entrance, $flag, $danger, $permission, $fee, $parking, $cafetaria, $shower, $info, $id));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchAll();

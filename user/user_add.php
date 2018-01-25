@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
     $user = $stmt->fetch();
 
     if ($user['firstname'] != '' and $user['name'] != '') {
-        $error = 'Het gekozen emailadres word reeds gebruikt door ' . $user['firstname'] . ' ' . $user['name'] . '.';
+        $_SESSION['error'] = 'Het gekozen emailadres word reeds gebruikt door ' . $user['firstname'] . ' ' . $user['name'] . '.';
     } else {
         $stmt = $pdo->prepare("INSERT INTO user (name, firstname, birthday, street, number, zip, city, country, dives, password, email, telephone, date_medical, medical_issue, admin, disabled, id_certificate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?)");
         $stmt->execute(array($name, $firstname, $birthday, $street, $number, $zip, $city, $country, $dives, password_hash($password, 1), $email, $telephone, $date_medical, $medical_issue, $cert));
@@ -33,7 +33,8 @@ if (isset($_POST['submit'])) {
         $user = $stmt->fetch();
         $stmt = $pdo->prepare("INSERT INTO diveclub_user (id_diveclub, id_user) VALUES (?, ?)");
         $stmt->execute(array($club, $user['id']));
-        header("Location:index.php");
+        $_SESSION['success'] = 'Nieuwe gebruiker ' . $user['firstname'] . ' ' . $user['name'] . ' is succesvol toegevoegd.';
+        header("Location:index");
     }
 }
 include "../html/partials/nav.php";
@@ -41,11 +42,7 @@ $certificates = $pdo->query("SELECT certificate.id, concat(certificate.name, \" 
 $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER BY diveclub.name ASC")->fetchAll();
 ?>
     <div class="container">
-        <?php if ($error != '') { ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo $error; ?>
-            </div>
-        <?php } ?>
+        <?php include "html/partials/error_success.php"; ?>
         <h2>Gebruiker toevoegen</h2>
         <form action="" method="post">
             <div class="row">

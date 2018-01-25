@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
             if ($user['level'] == 4) {
                 $_SESSION['instructor'] = 1;
             }
-            header("location: event/event.php");
+            header("location: event/event");
         } else {
             $_SESSION['error'] = "Email of wachtwoord is ongeldig";
         }

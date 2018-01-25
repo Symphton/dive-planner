@@ -4,7 +4,7 @@ include "html/partials/connect.php";
 session_start();
 include "html/partials/head.php";
 if (isset($_SESSION['email'])) {
-    header("location: event/event.php");
+    header("location: event/event");
 }
 include "login.php";
 include "html/partials/nav.php";

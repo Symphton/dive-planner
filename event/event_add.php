@@ -18,15 +18,17 @@ if (isset($_POST['submit'])) {
     $id_divesite = $_POST['id_divesite'];
     $stmt = $pdo->prepare("INSERT INTO event (name, date, level, time_carpool, time_onsite, time_water, time_tide, weather_forecast, wave_forecast, current_forecast, id_diveclub, id_user, id_carpool, id_divesite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute(array($name, $date, $level, $time_carpool, $time_onsite, $time_water, $time_tide, $weather_forecast, $wave_forecast, $current_forecast, $id_diveclub, $id_user, $id_carpool, $id_divesite));
-    header("Location:index.php");
+    $_SESSION['success'] = 'Het event ' . $name . ' is succesvol toegevoegd.';
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 $diveclubs = $pdo->query("SELECT id, name FROM diveclub ORDER BY name ASC")->fetchAll();
 $carpools = $pdo->query("SELECT id, name FROM carpool ORDER BY name ASC")->fetchAll();
-$users = $pdo->query("SELECT id,firstname, name FROM user ORDER BY name ASC, firstname ASC")->fetchAll();
+$users = $pdo->query("SELECT id, firstname, name FROM user ORDER BY name ASC, firstname ASC")->fetchAll();
 $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fetchAll();
 ?>
     <div class="container">
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Duik toevoegen</h2>
         <form action="" method="post">
             <div class="row">

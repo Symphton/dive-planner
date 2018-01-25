@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     $fed = $_POST['federation'];
     $stmt = $pdo->prepare("UPDATE diveclub SET name = ?, city = ?, id_federation = ? WHERE id = ?");
     $stmt->execute(array($name, $city, $fed, $id));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchAll();

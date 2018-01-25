@@ -39,7 +39,8 @@ if (isset($_POST['submit'])) {
     $id_divesite = $_POST['id_divesite'];
     $stmt = $pdo->prepare("UPDATE event SET name = ?, date = ?, level = ?, time_carpool = ?, time_onsite = ?, time_water = ?, time_tide = ?, weather_forecast = ?, wave_forecast = ?, current_forecast = ?, id_diveclub = ?, id_user = ?, id_carpool = ?, id_divesite = ? WHERE id = ?");
     $stmt->execute(array($name, $date, $level, $time_carpool, $time_onsite, $time_water, $time_tide, $weather_forecast, $wave_forecast, $current_forecast, $id_diveclub, $id_user, $id_carpool, $id_divesite, $id));
-    header("Location:index.php");
+    $_SESSION['success'] = 'De details van event ' . $name . ' zijn succesvol gewijzigd.';
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 $diveclubs = $pdo->query("SELECT id, name FROM diveclub ORDER BY name ASC")->fetchAll();
@@ -48,6 +49,7 @@ $users = $pdo->query("SELECT id,firstname, name FROM user ORDER BY name ASC, fir
 $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fetchAll();
 ?>
     <div class="container">
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Duik wijzigen</h2>
         <form action="" method="post">
             <div class="row">

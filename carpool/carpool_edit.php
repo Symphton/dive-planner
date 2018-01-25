@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
     $country = $_POST['country'];
     $stmt = $pdo->prepare("UPDATE carpool SET name = ?, street = ?, number = ?, zip = ?, city = ?, country = ? WHERE id = ?");
     $stmt->execute(array($name, $street, $number, $zip, $city, $country, $id));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 ?>

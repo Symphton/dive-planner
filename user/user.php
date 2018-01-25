@@ -6,7 +6,7 @@ $users = $pdo->query("SELECT user.id, user.firstname, user.name, user.email, cer
 ?>
     <div class="container">
         <?php include "../html/partials/error_success.php"; ?>
-        <h2>Gebruikers overzicht</h2> <a class="btn btn-outline-success" href="user_add.php" role="button">Gebruiker
+        <h2>Gebruikers overzicht</h2> <a class="btn btn-outline-success" href="user_add" role="button">Gebruiker
             toevoegen</a><br/>
         <table class="table table-hover">
             <thead>

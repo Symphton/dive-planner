@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
     $info = $_POST['info'];
     $stmt = $pdo->prepare("INSERT INTO divesite (name, street, number, zip, city, country, depth, ehbo, o2, telephone, safety, entrance, flag, danger, permission, fee, parking, cafetaria, shower, info) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute(array($name, $street, $number, $zip, $city, $country, $depth, $ehbo, $o2, $telephone, $safety, $entrance, $flag, $danger, $permission, $fee, $parking, $cafetaria, $shower, $info));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchAll();

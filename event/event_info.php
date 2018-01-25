@@ -17,6 +17,7 @@ $stmt->execute(array($id));
 $users = $stmt->fetchAll();
 ?>
     <div class="container">
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Duik info</h2>
         <br/>
         <h3>Algemene info</h3>

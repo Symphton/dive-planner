@@ -15,6 +15,7 @@ $registrations = $stmt->fetchAll();
 $registrations = array_reduce($registrations, 'array_merge', array());
 ?>
     <div class="container">
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Duik overzicht</h2> <a class="btn btn-outline-success" href="event_add.php" role="button">Duik
             toevoegen</a><br/>
         <table class="table table-hover">
@@ -39,24 +40,24 @@ $registrations = array_reduce($registrations, 'array_merge', array());
                     <td><?php print $event['diveleader']; ?></td>
                     <td><?php print $event['diveclub']; ?></td>
                     <td><a class="btn btn-outline-primary"
-                           href="event_info.php?id=<?php print $event['id']; ?>"
+                           href="event_info?id=<?php print $event['id']; ?>"
                            role="button">Info</a>
                         <?php if (!in_array($event['id'], $registrations)) { ?>
                             <a class="btn btn-outline-success"
-                               href="event_register.php?id=<?php print $event['id']; ?>"
+                               href="event_register?id=<?php print $event['id']; ?>"
                                role="button">Inschijven</a>
                         <?php } else { ?>
                             <a class="btn btn-outline-danger"
-                               href="event_unregister.php?id=<?php print $event['id']; ?>"
+                               href="event_unregister?id=<?php print $event['id']; ?>"
                                role="button">Uitschijven</a>
                         <?php }
                         if (isAdminOrInstructor()) { ?>
                             <a class="btn btn-outline-warning"
-                               href="event_edit.php?id=<?php print $event['id']; ?>"
+                               href="event_edit?id=<?php print $event['id']; ?>"
                                role="button">Wijzig</a>
                         <?php }
                         if (isAdmin()) { ?> <a class="btn btn-outline-danger"
-                                               href="event_delete.php?id=<?php print $event['id']; ?>"
+                                               href="event_delete?id=<?php print $event['id']; ?>"
                                                role="button">Delete</a>
                         <?php } ?>
                     </td>

@@ -7,7 +7,8 @@ if (isset($_POST['submit'])) {
     $carpool = $_POST['carpool'];
     $stmt = $pdo->prepare("INSERT INTO user_event (carpool, exercise, id_user, id_event) VALUES (?, ?, ?, ?)");
     $stmt->execute(array($carpool, $exercise, $_SESSION['id'], $id));
-    header("Location:index.php");
+    $_SESSION['success'] = "Je hebt je succesvol geregistreerd voor het event .";
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 $stmt = $pdo->prepare("SELECT name, date FROM event WHERE id = ?");
@@ -15,6 +16,7 @@ $stmt->execute(array($id));
 $event = $stmt->fetch();
 ?>
     <div class="container">
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Inschrijven voor duik <?php print $event['name'] . ' op ' . $event['date'] ?></h2>
         <form action="" method="post">
             <div class="row">

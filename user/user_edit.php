@@ -47,11 +47,12 @@ if (isset($_POST['submit'])) {
     $myMail = $stmt->fetchColumn();
 
     if ($user['firstname'] != '' and $user['name'] != '' and $myMail != $email) {
-        $error = 'Het gekozen emailadres word reeds gebruikt door ' . $user['firstname'] . ' ' . $user['name'] . '.';
+        $_SESSION['error'] = 'Het gekozen emailadres word reeds gebruikt door ' . $user['firstname'] . ' ' . $user['name'] . '.';
     } else {
         $stmt = $pdo->prepare("UPDATE user SET name = ?, firstname = ?, birthday = ?, street = ?, number = ?, zip = ?, city = ?, country = ?, dives = ?, email = ?, telephone = ?, date_medical = ?, medical_issue = ?, id_certificate = ? WHERE id = ?");
         $stmt->execute(array($name, $firstname, $birthday, $street, $number, $zip, $city, $country, $dives, $email, $telephone, $date_medical, $medical_issue, $cert, $id));
-        header("Location:index.php");
+        $_SESSION['success'] = "De gebruiker " . $firstname . " " . $name . " werd succesvol gewijzigd.";
+        header("Location:index");
     }
 }
 include "../html/partials/nav.php";
@@ -59,11 +60,7 @@ $certificates = $pdo->query("SELECT certificate.id, concat(certificate.name, \" 
 $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER BY diveclub.name ASC;")->fetchAll();
 ?>
     <div class="container">
-        <?php if ($error != '') { ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo $error; ?>
-            </div>
-        <?php } ?>
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Gebruiker wijzigen</h2>
         <form action="" method="post">
             <div class="row">

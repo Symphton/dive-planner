@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     $fed = $_POST['federation'];
     $stmt = $pdo->prepare("INSERT INTO certificate (name, level, id_federation) VALUES (?, ?, ?)");
     $stmt->execute(array($name, $level, $fed));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchAll();

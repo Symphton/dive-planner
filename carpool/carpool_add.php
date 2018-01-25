@@ -10,7 +10,7 @@ if (isset($_POST['submit'])) {
     $country = $_POST['country'];
     $stmt = $pdo->prepare("INSERT INTO carpool (name, street, number, zip, city, country) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute(array($name, $street, $number, $zip, $city, $country));
-    header("Location:index.php");
+    header("Location:index");
 }
 include "../html/partials/nav.php";
 ?>
