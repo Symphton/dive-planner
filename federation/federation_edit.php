@@ -1,5 +1,6 @@
 <?php
 include "../function.php";
+isAdminRedirect();
 include "../html/partials/head.php";
 $id = $_GET['id'];
 

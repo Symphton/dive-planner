@@ -1,5 +1,6 @@
 <?php
 include "../function.php";
+isAdminOrDiveleaderRedirect();
 include "../html/partials/head.php";
 $id = $_GET['id'];
 
@@ -14,9 +15,6 @@ $time_carpool = $user['time_carpool'];
 $time_onsite = $user['time_onsite'];
 $time_water = $user['time_water'];
 $time_tide = $user['time_tide'];
-$weather_forecast = $user['weather_forecast'];
-$wave_forecast = $user['wave_forecast'];
-$current_forecast = $user['current_forecast'];
 $id_diveclub = $user['id_diveclub'];
 $id_user = $user['id_user'];
 $id_carpool = $user['id_carpool'];
@@ -30,15 +28,12 @@ if (isset($_POST['submit'])) {
     $time_onsite = $_POST['time_onsite'];
     $time_water = $_POST['time_water'];
     $time_tide = $_POST['time_tide'];
-    $weather_forecast = $_POST['weather_forecast'];
-    $wave_forecast = $_POST['wave_forecast'];
-    $current_forecast = $_POST['current_forecast'];
     $id_diveclub = $_POST['id_diveclub'];
     $id_user = $_POST['id_user'];
     $id_carpool = $_POST['id_carpool'];
     $id_divesite = $_POST['id_divesite'];
-    $stmt = $pdo->prepare("UPDATE event SET name = ?, date = ?, level = ?, time_carpool = ?, time_onsite = ?, time_water = ?, time_tide = ?, weather_forecast = ?, wave_forecast = ?, current_forecast = ?, id_diveclub = ?, id_user = ?, id_carpool = ?, id_divesite = ? WHERE id = ?");
-    $stmt->execute(array($name, $date, $level, $time_carpool, $time_onsite, $time_water, $time_tide, $weather_forecast, $wave_forecast, $current_forecast, $id_diveclub, $id_user, $id_carpool, $id_divesite, $id));
+    $stmt = $pdo->prepare("UPDATE event SET name = ?, date = ?, level = ?, time_carpool = ?, time_onsite = ?, time_water = ?, time_tide = ?, id_diveclub = ?, id_user = ?, id_carpool = ?, id_divesite = ? WHERE id = ?");
+    $stmt->execute(array($name, $date, $level, $time_carpool, $time_onsite, $time_water, $time_tide, $id_diveclub, $id_user, $id_carpool, $id_divesite, $id));
     $_SESSION['success'] = 'De details van event ' . $name . ' zijn succesvol gewijzigd.';
     header("Location:index");
 }
@@ -92,7 +87,7 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                         </option>
                         <option value=4 <?php if (isset($level) and $level == 4) {
                             print 'selected="selected"';
-                        } ?>>Instructeur (AI - I1 - I2 - I3)
+                        } ?>>Instructeur (I1 - I2 - I3)
                         </option>
                     </select>
                 </div>
@@ -132,29 +127,6 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                                print $time_tide;
                            } ?>"
                            step="60">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="weather_forecast">Weersverwachting</label>
-                    <input type="text" class="form-control" id="weather_forecast" name="weather_forecast"
-                           value="<?php if (isset($weather_forecast)) {
-                               print $weather_forecast;
-                           } ?>">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="wave_forecast">Golfsverwachting</label>
-                    <input type="text" class="form-control" id="wave_forecast" name="wave_forecast"
-                           value="<?php if (isset($wave_forecast)) {
-                               print $wave_forecast;
-                           } ?>">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="current_forecast">Stromingsverwachting</label>
-                    <input type="text" class="form-control" id="current_forecast" name="current_forecast"
-                           value="<?php if (isset($current_forecast)) {
-                               print $current_forecast;
-                           } ?>">
                 </div>
             </div>
             <div class="row">

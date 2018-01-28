@@ -1,5 +1,7 @@
 <?php
 include "../function.php";
-$stmt = "DELETE FROM carpool WHERE id = ?";
-$pdo->prepare($stmt)->execute([$_GET['id']]);
+isAdminRedirect();
+$stmt = $pdo->prepare("UPDATE carpool SET deleted = 1 WHERE id = ?");
+$stmt->execute(array($_GET['id']));
+$_SESSION['success'] = 'De carpool locatie werd met succes verwijderd.';
 header("location: index.php");

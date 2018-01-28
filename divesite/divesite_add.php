@@ -1,5 +1,6 @@
 <?php
 include "../function.php";
+isAdminOrDiveleaderRedirect();
 include "../html/partials/head.php";
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
@@ -21,9 +22,14 @@ if (isset($_POST['submit'])) {
     $parking = $_POST['parking'];
     $cafetaria = $_POST['cafetaria'];
     $shower = $_POST['shower'];
+    $changingroom = $_POST['changingroom'];
+    $compressor = $_POST['compressor'];
+    $underground = $_POST['underground'];
+    $fish = $_POST['fish'];
+    $visibility = $_POST['visibility'];
     $info = $_POST['info'];
-    $stmt = $pdo->prepare("INSERT INTO divesite (name, street, number, zip, city, country, depth, ehbo, o2, telephone, safety, entrance, flag, danger, permission, fee, parking, cafetaria, shower, info) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute(array($name, $street, $number, $zip, $city, $country, $depth, $ehbo, $o2, $telephone, $safety, $entrance, $flag, $danger, $permission, $fee, $parking, $cafetaria, $shower, $info));
+    $stmt = $pdo->prepare("INSERT INTO divesite (name, street, number, zip, city, country, depth, ehbo, o2, telephone, safety, entrance, flag, danger, permission, fee, parking, cafetaria, shower, changingroom, compressor, underground, fish, visibility, info) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute(array($name, $street, $number, $zip, $city, $country, $depth, $ehbo, $o2, $telephone, $safety, $entrance, $flag, $danger, $permission, $fee, $parking, $cafetaria, $shower, $changingroom, $compressor, $underground, $fish, $visibility, $info));
     header("Location:index");
 }
 include "../html/partials/nav.php";
@@ -71,8 +77,7 @@ $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchA
                     <input type="text" class="form-control" id="number" name="number"
                            value="<?php if (isset($number)) {
                                print $number;
-                           } ?>"
-                           required>
+                           } ?>">
                 </div>
             </div>
             <div class="row">
@@ -96,6 +101,10 @@ $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchA
                         <option <?php if (isset($country) and $country == "Belgie") {
                             print 'selected="selected"';
                         } ?>>Belgie
+                        </option>
+                        <option <?php if (isset($country) and $country == "Duitsland") {
+                            print 'selected="selected"';
+                        } ?>>Duitsland
                         </option>
                         <option <?php if (isset($country) and $country == "Nederland") {
                             print 'selected="selected"';
@@ -213,6 +222,19 @@ $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchA
                         </option>
                     </select>
                 </div>
+                <div class="col-md-3 mb-3">
+                    <label for="compressor">Compressor beschikbaar?</label>
+                    <select class="form-control" id="compressor" name="compressor">
+                        <option value="0" <?php if (isset($compressor) and $compressor == 0) {
+                            print 'selected="selected"';
+                        } ?>>Nee
+                        </option>
+                        <option value="1" <?php if (isset($compressor) and $compressor == 1) {
+                            print 'selected="selected"';
+                        } ?>>Ja
+                        </option>
+                    </select>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-3 mb-3">
@@ -223,6 +245,19 @@ $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchA
                         } ?>>Nee
                         </option>
                         <option value="1" <?php if (isset($cafetaria) and $cafetaria == 1) {
+                            print 'selected="selected"';
+                        } ?>>Ja
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="changingroom">Kleedkamer beschikbaar?</label>
+                    <select class="form-control" id="changingroom" name="changingroom">
+                        <option value="0" <?php if (isset($changingroom) and $changingroom == 0) {
+                            print 'selected="selected"';
+                        } ?>>Nee
+                        </option>
+                        <option value="1" <?php if (isset($changingroom) and $changingroom == 1) {
                             print 'selected="selected"';
                         } ?>>Ja
                         </option>
@@ -240,6 +275,32 @@ $federations = $pdo->query("SELECT * FROM federation ORDER BY name ASC")->fetchA
                         } ?>>Ja
                         </option>
                     </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="underground">Bodem</label>
+                    <input type="text" class="form-control" id="underground" name="underground"
+                           value="<?php if (isset($underground)) {
+                               print $underground;
+                           } ?>">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="visibility">Gemiddelde zichtbaarheid</label>
+                    <input type="number" class="form-control" id="visibility" name="visibility"
+                           value="<?php if (isset($visibility)) {
+                               print $visibility;
+                           } ?>"
+                           required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label for="fish">Vissen</label>
+                    <input type="text" class="form-control" id="fish" name="fish"
+                           value="<?php if (isset($fish)) {
+                               print $fish;
+                           } ?>">
                 </div>
             </div>
             <div class="row">

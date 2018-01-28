@@ -1,5 +1,6 @@
 <?php
 include "../function.php";
+isAdminOrDiveleaderRedirect();
 include "../html/partials/head.php";
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
@@ -9,15 +10,12 @@ if (isset($_POST['submit'])) {
     $time_onsite = $_POST['time_onsite'];
     $time_water = $_POST['time_water'];
     $time_tide = $_POST['time_tide'];
-    $weather_forecast = $_POST['weather_forecast'];
-    $wave_forecast = $_POST['wave_forecast'];
-    $current_forecast = $_POST['current_forecast'];
     $id_diveclub = $_POST['id_diveclub'];
     $id_user = $_POST['id_user'];
     $id_carpool = $_POST['id_carpool'];
     $id_divesite = $_POST['id_divesite'];
-    $stmt = $pdo->prepare("INSERT INTO event (name, date, level, time_carpool, time_onsite, time_water, time_tide, weather_forecast, wave_forecast, current_forecast, id_diveclub, id_user, id_carpool, id_divesite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute(array($name, $date, $level, $time_carpool, $time_onsite, $time_water, $time_tide, $weather_forecast, $wave_forecast, $current_forecast, $id_diveclub, $id_user, $id_carpool, $id_divesite));
+    $stmt = $pdo->prepare("INSERT INTO event (name, date, level, time_carpool, time_onsite, time_water, time_tide, id_diveclub, id_user, id_carpool, id_divesite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute(array($name, $date, $level, $time_carpool, $time_onsite, $time_water, $time_tide, $id_diveclub, $id_user, $id_carpool, $id_divesite));
     $_SESSION['success'] = 'Het event ' . $name . ' is succesvol toegevoegd.';
     header("Location:index");
 }
@@ -71,7 +69,7 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                         </option>
                         <option value=4 <?php if (isset($level) and $level == 4) {
                             print 'selected="selected"';
-                        } ?>>Instructeur (AI - I1 - I2 - I3)
+                        } ?>>Instructeur (I1 - I2 - I3)
                         </option>
                     </select>
                 </div>
@@ -111,29 +109,6 @@ $divesites = $pdo->query("SELECT id, name FROM divesite ORDER BY name ASC")->fet
                                print $time_tide;
                            } ?>"
                            step="60">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="weather_forecast">Weersverwachting</label>
-                    <input type="text" class="form-control" id="weather_forecast" name="weather_forecast"
-                           value="<?php if (isset($weather_forecast)) {
-                               print $weather_forecast;
-                           } ?>">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="wave_forecast">Golfsverwachting</label>
-                    <input type="text" class="form-control" id="wave_forecast" name="wave_forecast"
-                           value="<?php if (isset($wave_forecast)) {
-                               print $wave_forecast;
-                           } ?>">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="current_forecast">Stromingsverwachting</label>
-                    <input type="text" class="form-control" id="current_forecast" name="current_forecast"
-                           value="<?php if (isset($current_forecast)) {
-                               print $current_forecast;
-                           } ?>">
                 </div>
             </div>
             <div class="row">

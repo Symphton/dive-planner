@@ -2,18 +2,19 @@
 include "../function.php";
 include "../html/partials/head.php";
 include "../html/partials/nav.php";
-$carpools = $pdo->query("SELECT id, name, city, country FROM carpool ORDER BY name ASC")->fetchAll();
+$carpools = $pdo->query("SELECT id, name, city, country FROM carpool WHERE deleted = 0 ORDER BY name ASC")->fetchAll();
 ?>
     <div class="container">
-        <h2>Carpool overzicht</h2> <a class="btn btn-outline-success" href="carpool_add.php" role="button">Carpool
-            toevoegen</a><br/>
+        <h2>Carpool overzicht</h2> <?php if (isAdminOrDiveleader()) { ?><a class="btn btn-outline-success"
+                                                                           href="carpool_add.php" role="button">Carpool
+            toevoegen</a><br/> <?php } ?>
         <table class="table table-hover">
             <thead>
             <tr>
                 <th>Naam</th>
                 <th>Stad</th>
                 <th>Land</th>
-                <?php if (isAdminOrInstructor()) {
+                <?php if (isAdminOrDiveleader()) {
                     print "<th></th>";
                 } ?>
             </tr>
@@ -24,7 +25,7 @@ $carpools = $pdo->query("SELECT id, name, city, country FROM carpool ORDER BY na
                     <td><?php print $carpool['name']; ?></td>
                     <td><?php print $carpool['city']; ?></td>
                     <td><?php print $carpool['country']; ?></td>
-                    <td><?php if (isAdminOrInstructor()) { ?>
+                    <td><?php if (isAdminOrDiveleader()) { ?>
                             <a class="btn btn-outline-warning"
                                href="carpool_edit.php?id=<?php print $carpool['id']; ?>"
                                role="button">Wijzig</a>

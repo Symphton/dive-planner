@@ -1,5 +1,6 @@
 <?php
 include "../function.php";
+isAdminOrInstructorRedirect();
 include "../html/partials/head.php";
 $id = $_GET['id'];
 
@@ -14,7 +15,13 @@ $stmt = $pdo->prepare("SELECT user.firstname, user.name, diveclub.id, diveclub.n
 $stmt->execute(array($id));
 $currentClubs = $stmt->fetchAll();
 
-$diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER BY diveclub.name ASC;")->fetchAll();
+$stmt = $pdo->prepare("SELECT id, name FROM diveclub WHERE id NOT IN (SELECT id_diveclub FROM diveclub_user WHERE id_user = ?) ORDER BY name ASC;");
+$stmt->execute(array($id));
+$diveclubs = $stmt->fetchAll();
+
+$stmt = $pdo->prepare("SELECT count(*) FROM diveclub WHERE id NOT IN (SELECT id_diveclub FROM diveclub_user WHERE id_user = ?) ORDER BY name ASC;");
+$stmt->execute(array($id));
+$count = $stmt->fetchColumn();
 
 include "../html/partials/nav.php";
 ?>
@@ -32,31 +39,31 @@ include "../html/partials/nav.php";
             <?php foreach ($currentClubs as $currentClub) { ?>
                 <tr>
                     <td><?php print $currentClub['diveclub']; ?></td>
-                    <?php if (isAdmin()) { ?>
-                        <td><a class="btn btn-outline-danger"
-                               href="user_diveclub_delete.php?id=<?php print $id; ?>&diveclub=<?php print $currentClub['id']; ?>"
-                               role="button">Duikclub deleten</a></td>
-                    <?php } ?>
+                    <td><a class="btn btn-outline-danger"
+                           href="user_diveclub_delete.php?id=<?php print $id; ?>&diveclub=<?php print $currentClub['id']; ?>"
+                           role="button">Duikclub deleten</a></td>
                 </tr>
             <?php } ?>
             </tbody>
         </table>
-        <form action="" method="post">
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <select class="form-control" id="diveclub" name="diveclub">
-                        <?php foreach ($diveclubs as $diveclub) { ?>
-                            <option <?php if (isset($club) and $club == $diveclub['id']) {
-                                print 'selected="selected"';
-                            } ?> value="<?php print $diveclub['id']; ?>"><?php print $diveclub['name']; ?></option>
-                        <?php } ?>
-                    </select>
+        <?php if ($count > 0) { ?>
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <select class="form-control" id="diveclub" name="diveclub">
+                            <?php foreach ($diveclubs as $diveclub) { ?>
+                                <option <?php if (isset($club) and $club == $diveclub['id']) {
+                                    print 'selected="selected"';
+                                } ?> value="<?php print $diveclub['id']; ?>"><?php print $diveclub['name']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-success" type="submit" name="submit">Duikclub toevoegen</button>
+                    </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <button class="btn btn-outline-success" type="submit" name="submit">Duikclub toevoegen</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        <?php } ?>
     </div>
 <?php
 include "../html/partials/includes.php";

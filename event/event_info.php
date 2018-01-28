@@ -3,7 +3,7 @@ include "../function.php";
 include "../html/partials/head.php";
 include "../html/partials/nav.php";
 $id = $_GET['id'];
-$stmt = $pdo->prepare("SELECT event.*, divesite.name AS divesite, carpool.name AS carpool, concat(user.name, ' ', user.firstname) AS diveleader, diveclub.name AS diveclub FROM event INNER JOIN divesite ON event.id_divesite = divesite.id INNER JOIN carpool ON event.id_carpool = carpool.id INNER JOIN diveclub ON event.id_diveclub = diveclub.id INNER JOIN user ON event.id_user = user.id WHERE event.id = ?");
+$stmt = $pdo->prepare("SELECT event.*, divesite.name AS divesite, carpool.name AS carpool, concat(user.name, ' ', user.firstname) AS diveleader, user.telephone, diveclub.name AS diveclub FROM event INNER JOIN divesite ON event.id_divesite = divesite.id INNER JOIN carpool ON event.id_carpool = carpool.id INNER JOIN diveclub ON event.id_diveclub = diveclub.id INNER JOIN user ON event.id_user = user.id WHERE event.id = ?");
 $stmt->execute(array($id));
 $event = $stmt->fetch();
 $stmt = $pdo->prepare("SELECT * FROM carpool WHERE id = ?");
@@ -35,43 +35,29 @@ $users = $stmt->fetchAll();
                             <td><?php print $event['diveleader']; ?></td>
                         </tr>
                         <tr>
+                            <th>Telefoonnummer duikverantwoordelijke</th>
+                            <td><?php print $event['telephone']; ?></td>
+                        </tr>
+                        <tr>
                             <th>Datum</th>
-                            <td><?php print $event['date']; ?></td>
+                            <td><?php print date("D j/n/Y", strtotime($event['date'])); ?></td>
                         </tr>
                         <tr>
                             <th>Tijd carpool</th>
-                            <td><?php print $event['time_carpool']; ?></td>
+                            <td><?php print date("G:i", strtotime($event['time_carpool'])); ?></td>
                         </tr>
                         <tr>
                             <th>Tijd ter plaatse</th>
-                            <td><?php print $event['time_onsite']; ?></td>
+                            <td><?php print date("G:i", strtotime($event['time_onsite'])); ?></td>
                         </tr>
                         <tr>
                             <th>Tijd te water</th>
-                            <td><?php print $event['time_water']; ?></td>
+                            <td><?php print date("G:i", strtotime($event['time_water'])); ?></td>
                         </tr>
-                        <?php if ($event['time_tide'] != '') { ?>
+                        <?php if (date("G:i", strtotime($event['time_tide'])) != '0:00') { ?>
                             <tr>
                                 <th>Tijd getijde</th>
-                                <td><?php print $event['time_tide']; ?></td>
-                            </tr>
-                        <?php }
-                        if ($event['weather_forecast'] != '') { ?>
-                            <tr>
-                                <th>Weersverwachting</th>
-                                <td><?php print $event['weather_forecast']; ?></td>
-                            </tr>
-                        <?php }
-                        if ($event['wave_forecast'] != '') { ?>
-                            <tr>
-                                <th>Verwachte golven</th>
-                                <td><?php print $event['wave_forecast']; ?></td>
-                            </tr>
-                        <?php }
-                        if ($event['current_forecast'] != '') { ?>
-                            <tr>
-                                <th>Verwachte stroming</th>
-                                <td><?php print $event['current_forecast']; ?></td>
+                                <td><?php print date("G:i", strtotime($event['time_tide'])); ?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
@@ -132,7 +118,10 @@ $users = $stmt->fetchAll();
                         </tr>
                         <tr>
                             <th>Maximale diepte</th>
-                            <td><?php print $divesite['depth']; ?></td>
+                            <td><?php print $divesite['depth'] . 'm'; ?></td>
+                        </tr>
+                        <th>Gemiddelde zichtbaarheid</th>
+                        <td><?php print $divesite['visibility'] . 'm'; ?></td>
                         </tr>
                         <tr>
                             <th>Inkom prijs</th>
@@ -147,8 +136,24 @@ $users = $stmt->fetchAll();
                             <td><?php print yesNo($divesite['cafetaria']); ?></td>
                         </tr>
                         <tr>
+                            <th>Kleedkamers</th>
+                            <td><?php print yesNo($divesite['changingroom']); ?></td>
+                        </tr>
+                        <tr>
                             <th>Douches</th>
                             <td><?php print yesNo($divesite['shower']); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Compressor</th>
+                            <td><?php print yesNo($divesite['compressor']); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Bodem</th>
+                            <td><?php print $divesite['underground']; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Vissen</th>
+                            <td><?php print $divesite['fish']; ?></td>
                         </tr>
                         </tbody>
                     </table>
@@ -204,8 +209,8 @@ $users = $stmt->fetchAll();
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Naam</th>
                 <th>Voornaam</th>
+                <th>Naam</th>
                 <th>Brevet</th>
                 <th>Vordering</th>
                 <th>Carpool</th>
@@ -214,8 +219,8 @@ $users = $stmt->fetchAll();
             <tbody>
             <?php foreach ($users as $user) { ?>
                 <tr>
-                    <td><?php print $user['name']; ?></td>
                     <td><?php print $user['firstname']; ?></td>
+                    <td><?php print $user['name']; ?></td>
                     <td><?php print $user['certificate']; ?></td>
                     <td><?php print $user['exercise']; ?></td>
                     <td><?php print yesNo($user['carpool']); ?></td>

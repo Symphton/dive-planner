@@ -1,6 +1,7 @@
 <?php
 include "../function.php";
-$stmt = "DELETE FROM event WHERE id = ?";
-$pdo->prepare($stmt)->execute([$_GET['id']]);
+isAdminRedirect();
+$stmt = $pdo->prepare("UPDATE event SET deleted = 1 WHERE id = ?");
+$stmt->execute(array($_GET['id']));
 $_SESSION['success'] = 'Het event werd met succes verwijderd.';
 header("location: index");

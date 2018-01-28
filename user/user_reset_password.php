@@ -1,5 +1,6 @@
 <?php
 include "../function.php";
+isAdminOrInstructorRedirect();
 $id = $_GET['id'];
 $stmt = $pdo->prepare("SELECT firstname, email FROM user WHERE id = ?");
 $stmt->execute(array($id));
@@ -10,7 +11,7 @@ $firstname = $user['firstname'];
 $password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(4)));
 
 $to = $email;
-$subject = 'Diveplanner Password Reset';
+$subject = 'Je Diveplanner wachtwoord';
 include "../mail/reset_password.php";
 $headers = 'From: noreply@hoylaerts.be' . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n";

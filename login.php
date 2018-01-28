@@ -13,9 +13,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['firstname'] = $user['firstname'];
             $_SESSION['id'] = $user['id'];
             $_SESSION['admin'] = $user['admin'];
-            if ($user['level'] == 4) {
-                $_SESSION['instructor'] = 1;
-            }
+            $_SESSION['level'] = $user['level'];
             header("location: event/event");
         } else {
             $_SESSION['error'] = "Email of wachtwoord is ongeldig";

@@ -36,7 +36,11 @@ if (isset($_POST['submit'])) {
     $telephone = $_POST['telephone'];
     $date_medical = $_POST['date_medical'];
     $medical_issue = $_POST['medical_issue'];
-    $cert = $_POST['certificate'];
+    if (isset($_POST['certificate'])) {
+        $cert = $_POST['certificate'];
+    } else {
+        $cert = $user['id_certificate'];
+    }
 
     $stmt = $pdo->prepare("SELECT firstname, name FROM user WHERE email = ?");
     $stmt->execute(array($email));
@@ -153,16 +157,18 @@ $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER 
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label for="certificate">Brevet</label>
-                    <select class="form-control" id="certificate" name="certificate">
-                        <?php foreach ($certificates as $certificate) { ?>
-                            <option <?php if (isset($cert) and $cert == $certificate['id']) {
-                                print 'selected="selected"';
-                            } ?> value="<?php print $certificate['id']; ?>"><?php print $certificate['name']; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
+                <?php if (isAdminOrInstructor()) { ?>
+                    <div class="col-md-3 mb-3">
+                        <label for="certificate">Brevet</label>
+                        <select class="form-control" id="certificate" name="certificate">
+                            <?php foreach ($certificates as $certificate) { ?>
+                                <option <?php if (isset($cert) and $cert == $certificate['id']) {
+                                    print 'selected="selected"';
+                                } ?> value="<?php print $certificate['id']; ?>"><?php print $certificate['name']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                <?php } ?>
                 <div class="col-md-3 mb-3">
                     <label for="dives">Aantal duiken</label>
                     <input type="text" class="form-control" id="dives" name="dives"

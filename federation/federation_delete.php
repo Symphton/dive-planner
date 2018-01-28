@@ -1,5 +1,7 @@
 <?php
 include "../function.php";
-$stmt = "DELETE FROM federation WHERE id = ?";
-$pdo->prepare($stmt)->execute([$_GET['id']]);
+isAdminRedirect();
+$stmt = $pdo->prepare("UPDATE federation SET deleted = 1 WHERE id = ?");
+$stmt->execute(array($_GET['id']));
+$_SESSION['success'] = 'De federatie werd met succes verwijderd.';
 header("location: index.php");
