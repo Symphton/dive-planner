@@ -11,7 +11,7 @@ if (isset($_POST['submit'])) {
     $city = $_POST['city'];
     $country = $_POST['country'];
     $dives = $_POST['dives'];
-    $password = $_POST['password'];
+    $password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(4)));
     $email = $_POST['email'];
     $telephone = $_POST['telephone'];
     $date_medical = $_POST['date_medical'];
@@ -26,14 +26,25 @@ if (isset($_POST['submit'])) {
     if ($user['firstname'] != '' and $user['name'] != '') {
         $_SESSION['error'] = 'Het gekozen emailadres word reeds gebruikt door ' . $user['firstname'] . ' ' . $user['name'] . '.';
     } else {
-        $stmt = $pdo->prepare("INSERT INTO user (name, firstname, birthday, street, number, zip, city, country, dives, password, email, telephone, date_medical, medical_issue, admin, disabled, id_certificate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?)");
-        $stmt->execute(array($name, $firstname, $birthday, $street, $number, $zip, $city, $country, $dives, password_hash($password, 1), $email, $telephone, $date_medical, $medical_issue, $cert));
-        $stmt = $pdo->prepare("SELECT id FROM user WHERE email = ?");
-        $stmt->execute(array($email));
-        $user = $stmt->fetch();
-        $stmt = $pdo->prepare("INSERT INTO diveclub_user (id_diveclub, id_user) VALUES (?, ?)");
-        $stmt->execute(array($club, $user['id']));
-        $_SESSION['success'] = 'Nieuwe gebruiker ' . $user['firstname'] . ' ' . $user['name'] . ' is succesvol toegevoegd.';
+        $to = $email;
+        $subject = 'Je Diveplanner account';
+        include "../mail/new_user.php";
+        $headers = 'From: noreply@hoylaerts.be' . "\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+        if (mail($to, $subject, $message, $headers)) {
+            $stmt = $pdo->prepare("INSERT INTO user (name, firstname, birthday, street, number, zip, city, country, dives, password, email, telephone, date_medical, medical_issue, admin, disabled, id_certificate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?)");
+            $stmt->execute(array($name, $firstname, $birthday, $street, $number, $zip, $city, $country, $dives, password_hash($password, 1), $email, $telephone, $date_medical, $medical_issue, $cert));
+            $stmt = $pdo->prepare("SELECT id FROM user WHERE email = ?");
+            $stmt->execute(array($email));
+            $user = $stmt->fetch();
+            $stmt = $pdo->prepare("INSERT INTO diveclub_user (id_diveclub, id_user) VALUES (?, ?)");
+            $stmt->execute(array($club, $user['id']));
+            $_SESSION['success'] = 'Nieuwe gebruiker ' . $user['firstname'] . ' ' . $user['name'] . ' is succesvol toegevoegd.';
+        } else {
+            $_SESSION['error'] = "Het verzenden van de gebruikersgegevens was helaas niet mogelijk.";
+        }
         header("Location:index");
     }
 }
@@ -115,14 +126,6 @@ $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER 
                            value="<?php if (isset($email)) {
                                print $email;
                            } ?>" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="password">Wachtwoord</label>
-                    <input type="password" class="form-control" id="password" name="password"
-                           value="<?php if (isset($password)) {
-                               print $password;
-                           } ?>"
-                           required>
                 </div>
             </div>
             <div class="row">
