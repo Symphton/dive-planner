@@ -206,7 +206,7 @@ $users = $stmt->fetchAll();
             <tr>
                 <th>Naam</th>
                 <th>Voornaam</th>
-                <th>Certificaat</th>
+                <th>Brevet</th>
                 <th>Vordering</th>
                 <th>Carpool</th>
             </tr>

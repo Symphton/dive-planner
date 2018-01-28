@@ -42,7 +42,7 @@ $certificates = $pdo->query("SELECT certificate.id, concat(certificate.name, \" 
 $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER BY diveclub.name ASC")->fetchAll();
 ?>
     <div class="container">
-        <?php include "html/partials/error_success.php"; ?>
+        <?php include "../html/partials/error_success.php"; ?>
         <h2>Gebruiker toevoegen</h2>
         <form action="" method="post">
             <div class="row">
@@ -154,7 +154,7 @@ $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER 
                     </select>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="certificate">Certificaat</label>
+                    <label for="certificate">Brevet</label>
                     <select class="form-control" id="certificate" name="certificate">
                         <?php foreach ($certificates as $certificate) { ?>
                             <option <?php if (isset($cert) and $cert == $certificate['id']) {

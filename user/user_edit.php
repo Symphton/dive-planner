@@ -154,7 +154,7 @@ $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER 
             </div>
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <label for="certificate">Certificaat</label>
+                    <label for="certificate">Brevet</label>
                     <select class="form-control" id="certificate" name="certificate">
                         <?php foreach ($certificates as $certificate) { ?>
                             <option <?php if (isset($cert) and $cert == $certificate['id']) {
