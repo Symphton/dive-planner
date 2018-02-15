@@ -4,6 +4,7 @@ isAdminOrInstructorRedirect();
 include "../html/partials/head.php";
 include "../html/partials/nav.php";
 $users = $pdo->query("SELECT user.id, user.firstname, user.name, user.email, certificate.name AS certificate, diveclub.name AS diveclub FROM user LEFT JOIN diveclub_user ON user.id=diveclub_user.id_user INNER JOIN diveclub ON diveclub_user.id_diveclub = diveclub.id INNER JOIN certificate ON user.id_certificate = certificate.id WHERE user.deleted = 0 GROUP BY user.email ORDER BY user.name ASC, user.firstname ASC")->fetchAll();
+unset($_SESSION['userid']);
 ?>
     <div class="container">
         <?php include "../html/partials/error_success.php"; ?>
@@ -28,17 +29,27 @@ $users = $pdo->query("SELECT user.id, user.firstname, user.name, user.email, cer
                     <td><?php print $user['email']; ?></td>
                     <td><?php print $user['certificate']; ?></td>
                     <td><?php print $user['diveclub']; ?></td>
-                    <td><a class="btn btn-outline-primary" href="user_diveclub.php?id=<?php print $user['id']; ?>"
-                           role="button">Duikclub</a>
-                        <a class="btn btn-outline-warning"
-                           href="user_edit.php?id=<?php print $user['id']; ?>"
-                           role="button">Wijzig</a>
-                        <a class="btn btn-outline-warning"
-                           href="user_reset_password.php?id=<?php print $user['id']; ?>"
-                           role="button">Reset wachtwoord</a>
-                        <a class="btn btn-outline-danger"
-                           href="user_delete.php?id=<?php print $user['id']; ?>"
-                           role="button">Delete</a></td>
+                    <td>
+                        <div class="btn-group">
+                            <form action="user_diveclub" method="post">
+                                <input type="hidden" id="id" name="id" value="<?php print $user['id']; ?>">
+                                <button class="btn btn-outline-primary" type="submit" name="redirect">Duikclub</button>
+                            </form>
+                            <form action="user_edit" method="post">
+                                <input type="hidden" id="id" name="id" value="<?php print $user['id']; ?>">
+                                <button class="btn btn-outline-warning" type="submit" name="redirect">Wijzig</button>
+                            </form>
+                            <form action="user_reset_password" method="post">
+                                <input type="hidden" id="id" name="id" value="<?php print $user['id']; ?>">
+                                <button class="btn btn-outline-warning" type="submit" name="redirect">Reset wachtwoord
+                                </button>
+                            </form>
+                            <form action="user_delete" method="post">
+                                <input type="hidden" id="id" name="id" value="<?php print $user['id']; ?>">
+                                <button class="btn btn-outline-danger" type="submit" name="redirect">Delete</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             <?php } ?>
             </tbody>

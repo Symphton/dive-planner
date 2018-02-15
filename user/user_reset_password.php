@@ -1,7 +1,7 @@
 <?php
 include "../function.php";
 isAdminOrInstructorRedirect();
-$id = $_GET['id'];
+$id = $_POST['id'];
 $stmt = $pdo->prepare("SELECT firstname, email FROM user WHERE id = ?");
 $stmt->execute(array($id));
 $user = $stmt->fetch();

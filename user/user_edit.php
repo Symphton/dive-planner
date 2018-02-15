@@ -2,7 +2,7 @@
 include "../function.php";
 isAdminOrInstructorRedirect();
 include "../html/partials/head.php";
-$id = $_GET['id'];
+$id = $_POST['id'];
 
 $stmt = $pdo->prepare("SELECT * FROM user WHERE id = ?");
 $stmt->execute(array($id));
@@ -64,6 +64,7 @@ $diveclubs = $pdo->query("SELECT diveclub.id, diveclub.name FROM diveclub ORDER 
         <?php include "../html/partials/error_success.php"; ?>
         <h2>Gebruiker wijzigen</h2>
         <form action="" method="post">
+            <input type="hidden" id="id" name="id" value="<?php print $id; ?>">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="firstname">Voornaam</label>
