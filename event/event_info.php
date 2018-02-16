@@ -12,7 +12,7 @@ $carpool = $stmt->fetch();
 $stmt = $pdo->prepare("SELECT * FROM divesite WHERE id = ?");
 $stmt->execute(array($event['id_divesite']));
 $divesite = $stmt->fetch();
-$stmt = $pdo->prepare("SELECT user_event.id, user.name, user.firstname, certificate.name AS certificate, exercise, carpool FROM user INNER JOIN user_event ON user.id = user_event.id_user INNER JOIN certificate ON user.id_certificate = certificate.id WHERE user_event.id_event = ? ORDER BY user.name ASC, user.firstname ASC ");
+$stmt = $pdo->prepare("SELECT user_event.id, user.name, user.firstname, certificate.name AS certificate, certificate.level AS level, exercise, carpool FROM user INNER JOIN user_event ON user.id = user_event.id_user INNER JOIN certificate ON user.id_certificate = certificate.id WHERE user_event.id_event = ? ORDER BY certificate.level DESC, certificate.name DESC, user.name ASC, user.firstname ASC ");
 $stmt->execute(array($id));
 $users = $stmt->fetchAll();
 ?>

@@ -2,17 +2,17 @@
 include "../function.php";
 include "../html/partials/head.php";
 include "../html/partials/nav.php";
+$id = $_SESSION['id'];
 if (isAdmin()) {
     $events = $pdo->query("SELECT event.id, event.name, event.date, event.time_onsite, divesite.name AS divesite, concat(user.firstname, ' ', user.name) AS diveleader, diveclub.name AS diveclub FROM event INNER JOIN divesite ON event.id_divesite = divesite.id INNER JOIN user ON event.id_user = user.id INNER JOIN diveclub ON event.id_diveclub = diveclub.id WHERE event.date >= curdate() AND  event.deleted = 0 ORDER BY event.date ASC")->fetchAll();
 } else {
-    $stmt = $pdo->prepare("SELECT event.id, event.name, event.date, event.time_onsite, divesite.name AS divesite, concat(user.firstname, ' ', user.name) AS diveleader, diveclub.name AS diveclub FROM event INNER JOIN divesite ON event.id_divesite = divesite.id INNER JOIN user ON event.id_user = user.id INNER JOIN diveclub ON event.id_diveclub = diveclub.id INNER JOIN diveclub_user ON event.id_diveclub = diveclub_user.id_diveclub WHERE diveclub_user.id_user = ? AND event.date >= curdate() AND event.deleted = 0 ORDER BY event.date ASC");
-    $stmt->execute(array($_SESSION['id']));
+    $stmt = $pdo->prepare("SELECT event.level, event.id, event.name, event.date, event.time_onsite, divesite.name AS divesite, concat(user.firstname, ' ', user.name) AS diveleader, diveclub.name AS diveclub FROM event INNER JOIN divesite ON event.id_divesite = divesite.id INNER JOIN user ON event.id_user = user.id INNER JOIN diveclub ON event.id_diveclub = diveclub.id INNER JOIN diveclub_user ON event.id_diveclub = diveclub_user.id_diveclub WHERE diveclub_user.id_user = ? AND event.date >= curdate() AND (SELECT level FROM certificate INNER JOIN user user ON certificate.id = user.id_certificate WHERE user.id = ?) >= event.level AND event.deleted = 0 ORDER BY event.date ASC");
+    $stmt->execute(array($id, $id));
     $events = $stmt->fetchAll();
 }
-$stmt = $pdo->prepare("SELECT user_event.id_event AS id FROM user_event WHERE id_user = ?");
-$stmt->execute(array($_SESSION['id']));
-$registrations = $stmt->fetchAll();
-$registrations = array_reduce($registrations, 'array_merge', array());
+$stmt = $pdo->prepare("SELECT user_event.id_event AS id FROM user_event INNER JOIN event ON user_event.id_event = event.id WHERE event.date >= curdate() AND user_event.id_user = ?");
+$stmt->execute(array($id));
+$registrations = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 ?>
     <div class="container">
         <?php include "../html/partials/error_success.php"; ?>
